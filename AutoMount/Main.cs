@@ -3,11 +3,14 @@ using UnityModManagerNet;
 using System.Reflection;
 using static UnityModManagerNet.UnityModManager.ModEntry;
 using Kingmaker;
+using Kingmaker.UnitLogic;
 using Kingmaker.UnitLogic.Parts;
 using UnityEngine;
 using AutoMount.Events;
 using Kingmaker.PubSubSystem;
+using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.JsonSystem;
+using TabletopTweaks.Core.Utilities;
 
 namespace AutoMount
 {
@@ -97,39 +100,67 @@ namespace AutoMount
 
                 var pet = rider.GetPet(Kingmaker.Enums.PetType.AnimalCompanion);
 
-                if (pet != null && (rider.State.Size < pet.State.Size))
+                if (pet != null)
                 {
-                    /* Deadge people don't ride */
-                    if (rider.State.IsDead || pet.State.IsDead)
+                    var petsizelarger = (rider.State.Size < pet.State.Size);
+                    var petsizesmaller = (rider.State.Size > pet.State.Size);
+					bool bhasfeat = rider.HasFact(BlueprintTools.GetBlueprint<BlueprintFeature>("545b7d2c36bd4eaeab7755377c7ee750"));
+					// "UndersizedMount": "545b7d2c-36bd-4eae-ab77-55377c7ee750"
+					
+					bool blargermnt = false;
+					bool bsamesize = false;
+					
+					if (petsizelarger)
+					{
+						blargermnt = true;
+					}
+					else if (!petsizesmaller)
+					{
+						bsamesize = true;
+					}
+					
+					if (Settings.IsEnabled(Settings.ConsoleOutput))
+					{
+						Utils.ConsoleLog(rider.CharacterName + " smaller than pet = " + blargermnt.ToString(), Color.blue);
+						Utils.ConsoleLog(rider.CharacterName + " same size as pet = " + bsamesize.ToString(), Color.blue);
+						Utils.ConsoleLog(rider.CharacterName + " has Undersized Mount feat = " + bhasfeat.ToString(), Color.blue);
+					}
+					
+					
+					if (blargermnt || (bsamesize && bhasfeat))
                     {
-                        if (Settings.IsEnabled(Settings.ConsoleOutput))
+						// Dead people don't ride
+                        if (rider.State.IsDead || pet.State.IsDead)
                         {
-                            Utils.ConsoleLog(rider.CharacterName + " -> " + pet.CharacterName + " DEADGE", Color.red);
-                        }
-
-                        continue;
-                    }
-
-                    var mount = rider.ActivatableAbilities.Enumerable.Find(a => a.Blueprint.AssetGuid.CompareTo(m_mount_ability_guid) == 0);
-
-                    if (mount != null)
-                    {
-                        if (mount.IsOn && !on)
-                        {
-                            rider.RiderPart?.Dismount();
-
                             if (Settings.IsEnabled(Settings.ConsoleOutput))
                             {
-                                Utils.ConsoleLog(rider.CharacterName + " -> " + pet.CharacterName + " OFF", Color.blue);
+                                Utils.ConsoleLog(rider.CharacterName + " -> " + pet.CharacterName + " DEAD", Color.red);
                             }
-                        }
-                        else if (!mount.IsOn && on)
-                        {
-                            rider.Ensure<UnitPartRider>().Mount(pet);
 
-                            if (Settings.IsEnabled(Settings.ConsoleOutput))
+                            continue;
+                        }
+
+                        var mount = rider.ActivatableAbilities.Enumerable.Find(a => a.Blueprint.AssetGuid.CompareTo(m_mount_ability_guid) == 0);
+
+                        if (mount != null)
+                        {
+                            if (mount.IsOn && !on)
                             {
-                                Utils.ConsoleLog(rider.CharacterName + " -> " + pet.CharacterName + " ON", Color.blue);
+                                rider.RiderPart?.Dismount();
+
+                                if (Settings.IsEnabled(Settings.ConsoleOutput))
+                                {
+                                    Utils.ConsoleLog(rider.CharacterName + " -> " + pet.CharacterName + " OFF", Color.blue);
+                                }
+                            }
+                            else if (!mount.IsOn && on)
+                            {
+                                rider.Ensure<UnitPartRider>().Mount(pet);
+
+                                if (Settings.IsEnabled(Settings.ConsoleOutput))
+                                {
+                                    Utils.ConsoleLog(rider.CharacterName + " -> " + pet.CharacterName + " ON", Color.blue);
+                                }
                             }
                         }
                     }

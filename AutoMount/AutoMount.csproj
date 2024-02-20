@@ -58,6 +58,10 @@
 			<HintPath>$(WrathPath)\Mods\ModMenu\ModMenu.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="TabletopTweaks-Core">
+			<HintPath>$(WrathPath)\Mods\TabletopTweaks-Core\TabletopTweaks-Core.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
