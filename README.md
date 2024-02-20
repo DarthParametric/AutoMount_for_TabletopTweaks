@@ -9,7 +9,7 @@ Adapted for compatibility with TabletopTweaks and its Undersized Mount feat, all
 1. Download TabletopTweaks-Core [here](https://github.com/Vek17/TabletopTweaks-Core/releases/latest)
 1. Download TabletopTweaks-Base [here](https://github.com/Vek17/TabletopTweaks-Base/releases/latest)
 1. Download and install [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).
-    1. You can also use ModFinder. Download it from [here](https://github.com/Pathfinder-WOTR-Modding-Community/ModFinder/releases/latest)
+    * You can also use ModFinder. Download it from [here](https://github.com/Pathfinder-WOTR-Modding-Community/ModFinder/releases/latest)
 1. Drag mod zips into Unity Mod Manager (or ModFinder).
 1. Run your game.
 
