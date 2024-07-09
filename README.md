@@ -17,18 +17,11 @@ Mount all your animal companions automatically with a customizable keybind. Adap
     - Mount: **Ctrl+Shift+A** (default).
     - Dismount: **Ctrl+Shift+D** (default).
 - Auto mount when entering area (toggleable).
-- Whitelist/blacklist party members mounting by party slot position (default all enabled).
-
-# FAQ
-
-Ask and I shall answer.
-
-# Planned upgrades
-- Use party member names instead of party slot number.
+- Whitelist/blacklist party members mounting by party slot position (default is all enabled).
 
 # Notes
 - You can make the mount/dismount toggleable by assigning the same keybind to both functions.
 - Even though you can technically mount/dismount anywhere anytime (as long as the game allows it) it **will** consume your move action if you perform it while in combat.
-- On mounting riders will teleport to their respective mounts. I don't intend to implement any movement animation for the time being.
-
+- On mounting, riders will teleport to their respective mounts. I don't intend to implement any movement animation for the time being.
+- If using the ToyBox cheat to autorest at the end of combat, you will be dismounted. No plans to change this.
 
