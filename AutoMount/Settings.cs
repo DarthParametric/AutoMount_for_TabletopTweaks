@@ -115,8 +115,14 @@ namespace AutoMount
 
             /* Whitelist */
             var whitelist = settings.AddSubHeader(GetString(Whitelist, "Character Whitelist"), true);
-
-            for (int i = 0; i < 6; i++)
+            int slotCount = 6;
+            
+			if (GetMPSSlots() != null)
+			{
+				slotCount = Convert.ToInt32(GetMPSSlots());
+			}
+			
+			for (int i = 0; i < slotCount; i++)
             {
                 whitelist.AddToggle(
                     Toggle.New(
@@ -168,6 +174,47 @@ namespace AutoMount
         private static LocalizedString GetString(string partialKey, string text)
         {
             return Helpers.CreateString(GetKey(partialKey), text);
+        }
+		
+        // Checks for the presence of xADDBx's "More Party Slots" mod and returns its config value, kindly supplied by microsoftenator2022
+        public static int? GetMPSSlots()
+        {
+            int? mpsSlots = null;
+
+            if (UnityModManager.FindMod("MorePartySlots") is { } morePartySlots && morePartySlots.Active)
+            {
+                Main.Logger.Log($"Found {morePartySlots.Info.DisplayName} v{morePartySlots.Info.Version}");
+
+                var mpsSettingsType = morePartySlots.Assembly.GetType("MorePartySlots.Settings");
+
+                if (mpsSettingsType is null)
+                {
+                    Main.Logger.Error("Could not get MorePartySlots settings type");
+
+                    return null;
+                }
+
+                Main.Logger.Log($"Settings type: {mpsSettingsType.FullName}");
+
+                var mpsSlotsField = mpsSettingsType.GetField("Slots");
+
+                if (mpsSlotsField is null)
+                {
+                    Main.Logger.Error("Could not get slots count field");
+                    return null;
+                }
+
+                var mpsSettings =
+                    typeof(UnityModManager.ModSettings)
+                        .GetMethods()
+                        .First(mi => mi.Name == nameof(UnityModManager.ModSettings.Load) && mi.GetParameters().Length == 1)
+                        .MakeGenericMethod([mpsSettingsType])
+                        .Invoke(null, [morePartySlots]);
+
+                mpsSlots = (int)mpsSlotsField.GetValue(mpsSettings);
+            }
+
+            return mpsSlots;
         }
     }
 
