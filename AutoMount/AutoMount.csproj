@@ -8,8 +8,8 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<LangVersion>preview</LangVersion>
 		<RunPostBuildEvent>Always</RunPostBuildEvent>
-		<AssemblyVersion>1.1.0</AssemblyVersion>
-		<FileVersion>1.1.0</FileVersion>
+		<AssemblyVersion>1.2.0</AssemblyVersion>
+		<FileVersion>1.2.0</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -60,10 +60,6 @@
 			<HintPath>$(WrathPath)\Mods\ModMenu\ModMenu.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="TabletopTweaks-Core">
-			<HintPath>$(WrathPath)\Mods\TabletopTweaks-Core\TabletopTweaks-Core.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -81,16 +77,22 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="Info.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="start XCOPY /Y /R &quot;$(TargetDir)\$(TargetName).*&quot; &quot;$(WrathPath)\Mods\$(ProjectName)\&quot;&#xD;&#xA;start XCOPY /Y /R &quot;$(ProjectDir)\Info.json&quot; &quot;$(WrathPath)\Mods\$(ProjectName)\&quot;" />
+	<Target Name="Deploy" AfterTargets="Build">
+		<ItemGroup>
+			<Files1 Include="$(OutDir)\**\AutoMount.*" />
+		</ItemGroup>
+		<ItemGroup>
+			<Files2 Include="$(ProjectDir)\Info.json" />
+		</ItemGroup>
+		
+		<Copy
+			SourceFiles="@(Files1);@(Files2)"
+			DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)"
+			OverwriteReadOnlyFiles="true"
+			SkipUnchangedFiles="false"
+		/>
 	</Target>
-
+	
 	<Target Name="Publicize" AfterTargets="Clean">
 		<ItemGroup>
 			<Assemblies Include="$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp.dll" />

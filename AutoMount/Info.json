@@ -1,11 +1,12 @@
-﻿{
+{
     "Id": "AutoMount",
     "DisplayName": "Auto Mount for TabletopTweaks",
     "Author": "Zepheon, DarthParametric",
-    "Version": "1.1.1",
-    "ManagerVersion": "0.27.14",
-    "Requirements": [ "TabletopTweaks-Core-0.7.6", "TabletopTweaks-Base-2.6.7", "ModMenu-1.3.2" ],
-    "LoadAfter": [ "MewsiferConsole.Mod", "TabletopTweaks-Core", "TabletopTweaks-Base", "MorePartySlots" ],
+    "Version": "1.2.0",
+    "GameVersion": "2.3.3",
+    "ManagerVersion": "0.28.2",
+    "Requirements": [ "ModMenu-1.3.2" ],
+    "LoadAfter": [ "MewsiferConsole.Mod", "0ToyBox0", "TabletopTweaks-Core", "TabletopTweaks-Base", "MorePartySlots" ],
     "AssemblyName": "AutoMount.dll",
     "EntryMethod": "AutoMount.Main.Load",
     "Repository": "https://raw.githubusercontent.com/DarthParametric/AutoMount_for_TabletopTweaks/master/AutoMount/Repository.json",
