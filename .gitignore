@@ -364,4 +364,6 @@ MigrationBackup/
 FodyWeavers.xsd
 /img
 
+GamePath.props
+Export/
 AutoMount/Reference/

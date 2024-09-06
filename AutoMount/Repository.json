@@ -2,8 +2,8 @@
     "Releases": [
         {
             "Id": "AutoMount",
-            "Version": "1.2.0",
-			"DownloadUrl": "https://github.com/DarthParametric/AutoMount_for_TabletopTweaks/releases/download/1.2.0/AutoMount_for_TabletopTweaks_v1.2.0.zip"
+            "Version": "1.2.1",
+			"DownloadUrl": "https://github.com/DarthParametric/AutoMount_for_TabletopTweaks/releases/download/1.2.1/AutoMount_for_TabletopTweaks_v1.2.1.zip"
         }
     ]
 }

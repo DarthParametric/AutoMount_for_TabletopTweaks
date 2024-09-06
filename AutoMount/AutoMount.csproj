@@ -1,106 +1,97 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk" InitialTargets="GenerateCustomPropsFile">
+	<Import Project="$(SolutionDir)GamePath.props" Condition="Exists('$(SolutionDir)GamePath.props')" />
 
 	<PropertyGroup>
 		<TargetFramework>net481</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>disable</Nullable>
-		<PackageOutputPath>$(OutputPath)</PackageOutputPath>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-		<LangVersion>preview</LangVersion>
-		<RunPostBuildEvent>Always</RunPostBuildEvent>
-		<AssemblyVersion>1.2.0</AssemblyVersion>
-		<FileVersion>1.2.0</FileVersion>
+		<AssemblyName>AutoMount</AssemblyName>
+		<Description>AutoMount for TabletopTweaks</Description>
+		<Version>1.2.1</Version>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>latest</LangVersion>
+		<RootNamespace>AutoMount</RootNamespace>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<RestoreAdditionalProjectSources>https://api.nuget.org/v3/index.json</RestoreAdditionalProjectSources>
+		<WrathData>$(LocalAppData)Low\Owlcat Games\Pathfinder Wrath Of The Righteous</WrathData>
 	</PropertyGroup>
-
 	<ItemGroup>
-	  <PackageReference Include="AssemblyPublicizer" Version="1.0.2">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\Assembly-CSharp.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\Assembly-CSharp-firstpass.dll*" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\Core*.dll" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\Newtonsoft.Json.dll*" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\Owlcat*.dll" Publicize="true" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\UniRx.dll*" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\Unity*.dll" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\UnityModManager\UnityModManager.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Wrath_Data\Managed\UnityModManager\0Harmony.dll*" Private="false" />
+		<Reference Include="$(WrathInstallDir)\Mods\ModMenu\ModMenu.dll" Private="false" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="0Harmony">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Assembly-CSharp">
-			<HintPath>$(SolutionDir)lib\Assembly-CSharp_public.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Assembly-CSharp-firstpass">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Owlcat.Runtime.Core">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="Owlcat.Runtime.UI">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\Owlcat.Runtime.UI.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="UnityEngine.TextRenderingModule">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityModManager">
-			<HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ModMenu">
-			<HintPath>$(WrathPath)\Mods\ModMenu\ModMenu.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Properties\Resources.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-	</ItemGroup>
-
-	<Target Name="Deploy" AfterTargets="Build">
+	<Target Name="EmptyModDir" BeforeTargets="Build">
 		<ItemGroup>
-			<Files1 Include="$(OutDir)\**\AutoMount.*" />
-		</ItemGroup>
-		<ItemGroup>
-			<Files2 Include="$(ProjectDir)\Info.json" />
+			<ModDir Include="$(WrathInstallDir)\Mods\$(AssemblyName)\*.*" />
 		</ItemGroup>
 		
+		<Delete Files="@(ModDir)" />
+	</Target>
+	<ItemGroup>
+		<None Include="Info.json" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	<Target Name="Deploy" AfterTargets="Build">
+		<ItemGroup>
+			<Files Include="$(TargetDir)\**\*.*" />
+		</ItemGroup>
+
+		<PropertyGroup>
+			<ModDescription>$(Description.Replace(' ', '_'))</ModDescription>
+		</PropertyGroup>
+
 		<Copy
-			SourceFiles="@(Files1);@(Files2)"
-			DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)"
+			SourceFiles="@(Files)"
+			DestinationFiles="@(Files->'$(WrathInstallDir)\Mods\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')"
 			OverwriteReadOnlyFiles="true"
 			SkipUnchangedFiles="false"
 		/>
+		
+		<MakeDir Directories="$(MSBuildProjectDirectory)\$(OutputPath)\$(AssemblyName)" />
+		<Move SourceFiles="@(Files)" DestinationFolder="$(MSBuildProjectDirectory)\$(OutputPath)\$(AssemblyName)"/>
+		
+		<ZipDirectory
+			SourceDirectory="$(MSBuildProjectDirectory)\$(OutputPath)"
+			DestinationFile="$(SolutionDir)Export\$(ModDescription)_v$(Version).zip"
+			Overwrite="true"
+		/>
 	</Target>
-	
-	<Target Name="Publicize" AfterTargets="Clean">
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" IncludeAssets="build; contentfiles" Version="0.4.2" PrivateAssets="all" />
+	</ItemGroup>
+	<Target Name="GenerateCustomPropsFile" Condition="$(WrathInstallDir) == ''">
+		<Exec Command="findstr /C:&quot;Mono path[0]&quot; &quot;$(WrathData)\Player.log&quot;" IgnoreExitCode="true" ConsoleToMSBuild="true">
+			<Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+			<Output TaskParameter="ConsoleOutput" PropertyName="MonoPathLine" />
+		</Exec>
+
+		<PropertyGroup>
+			<MonoPathRegex>^Mono path\[0\] = '(.*?)/Wrath_Data/Managed'$</MonoPathRegex>
+		</PropertyGroup>
+
+		<PropertyGroup>
+			<WrathInstallDir>$([System.Text.RegularExpressions.Regex]::Match($(MonoPathLine), $(MonoPathRegex)).Groups[1].Value)</WrathInstallDir>
+		</PropertyGroup>
+
+		<WriteLinesToFile File="$(SolutionDir)GamePath.props" Lines="&lt;Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'&gt;&#xD;&#xA;	&lt;PropertyGroup&gt;&#xD;&#xA;		&lt;WrathInstallDir&gt;$(WrathInstallDir)&lt;/WrathInstallDir&gt;&#xD;&#xA;	&lt;/PropertyGroup&gt;&#xD;&#xA;&lt;/Project&gt;" Overwrite="true" Encoding="utf-8" />
+	</Target>
+	<Target Name="DeleteFiles" BeforeTargets="Clean">
 		<ItemGroup>
-			<Assemblies Include="$(WrathPath)\Wrath_Data\Managed\Assembly-CSharp.dll" />
+			<PropsFile Include="GamePath.props" />
 		</ItemGroup>
-
-		<PublicizeTask InputAssemblies="@(Assemblies)" OutputDir="$(SolutionDir)lib/" />
+		<ItemGroup>
+			<ExportDir Include="$(SolutionDir)Export\*.zip" />
+		</ItemGroup>
+		
+		<Delete Files="@(PropsFile);@(ExportDir)" />
 	</Target>
-
-	<ProjectExtensions><VisualStudio><UserProperties info_1json__JsonSchema="https://json.schemastore.org/global.json" /></VisualStudio></ProjectExtensions>
-
+	<Target Name="PostClean" AfterTargets="Clean">
+		<RemoveDir Directories="$(OutDir)"/>
+	</Target>
 </Project>
