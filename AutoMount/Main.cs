@@ -12,6 +12,7 @@ using Kingmaker.Enums;
 using Kingmaker.PubSubSystem;
 using Kingmaker.UnitLogic;
 using Kingmaker.UnitLogic.Abilities.Components.TargetCheckers;
+using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.UnitLogic.Parts;
 using Kingmaker.Utility;
 using System.Reflection;
@@ -389,6 +390,8 @@ namespace AutoMount
 		{
 			var bpVermin = (BlueprintFeature)ResourcesLibrary.TryGetBlueprint(new BlueprintGuid(new Guid("09478937695300944a179530664e42ec")));
 			var bpElemental = (BlueprintFeature)ResourcesLibrary.TryGetBlueprint(new BlueprintGuid(new Guid("daf893d14cc54e98a319fb121d7ac4d9")));
+			var KitsuneRace = (BlueprintRace)ResourcesLibrary.TryGetBlueprint(new BlueprintGuid(new Guid("fd188bb7bb0002e49863aec93bfb9d99")));
+			var HumanRace = (BlueprintRace)ResourcesLibrary.TryGetBlueprint(new BlueprintGuid(new Guid("0a5d473ead98b0646b94495af250fdc4")));
 			bool bMountValid = AbilityTargetIsSuitableMount.CanMount(Master, AnimalComp);
 			bool bSizeValid = AbilityTargetIsSuitableMountSize.CanMount(Master, AnimalComp);
 			bool bVermin = AnimalComp.HasFact(bpVermin);
@@ -397,6 +400,24 @@ namespace AutoMount
 			bool bMasterPoly = Master.GetActivePolymorph().Component != null;
 			bool bCmbLog = Settings.IsCombatLoggingEnabled();
 			bool bPopUp = Settings.IsCombatLogDebugEnabled();
+
+			// Account for Nenio and other Kitsune counting as polymorphed when in Human form.
+			if (Master.HasFact(KitsuneRace))
+			{
+				// Check that they are polymorphed into a Human.
+				var PolyType = Master.GetActivePolymorph().Component.Race;
+
+				if (PolyType == HumanRace)
+				{
+					if (Settings.IsCombatLoggingEnabled())
+					{
+						// Don't pipe to in-game combat log to prevent Nenio spoilers.
+						Logger.Log($"{Master.CharacterName} is a Kitsune polymorphed into a Human. Disabling polymorph check.");
+					}
+
+					bMasterPoly = false;
+				}
+			}
 
 			if (!Master.State.IsDead && bMountValid && bSizeValid && !Master.State.IsHelpless && !AnimalComp.State.IsHelpless && !bMasterPoly && !bVermin && !bElemental)
 			{
