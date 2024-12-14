@@ -402,7 +402,7 @@ namespace AutoMount
 			bool bPopUp = Settings.IsCombatLogDebugEnabled();
 
 			// Account for Nenio and other Kitsune counting as polymorphed when in Human form.
-			if (Master.HasFact(KitsuneRace))
+			if (Master.HasFact(KitsuneRace) && bMasterPoly)
 			{
 				// Check that they are polymorphed into a Human.
 				var PolyType = Master.GetActivePolymorph().Component.Race;

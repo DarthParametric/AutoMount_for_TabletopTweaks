@@ -2,7 +2,7 @@
     "Id": "AutoMount",
     "DisplayName": "Auto Mount for TabletopTweaks",
     "Author": "Zepheon, DarthParametric",
-    "Version": "1.2.2",
+    "Version": "1.2.3",
     "GameVersion": "2.5.0",
     "ManagerVersion": "0.31.0",
     "Requirements": [ "ModMenu-1.3.2" ],
