@@ -1,11 +1,11 @@
-﻿using HarmonyLib;
-using Kingmaker.Blueprints.JsonSystem;
+﻿using Kingmaker.Blueprints.JsonSystem;
 using Kingmaker.Localization;
 using Kingmaker.UI;
 using ModMenu.Settings;
 using KeyBinding = ModMenu.Settings.KeyBinding;
 using UnityEngine;
 using UnityModManagerNet;
+using static AutoMount.Utils;
 
 namespace AutoMount
 {
@@ -24,15 +24,13 @@ namespace AutoMount
 		public static readonly string MountHotKey = $"{Hotkeys}.mounthotkey";
 		public static readonly string DismountHotKey = $"{Hotkeys}.dismounthotkey";
 
-		private static SettingsBuilder settings = SettingsBuilder.New(RootKey, GetString(GetKey("title"), "Auto Mount"));
+		private static readonly SettingsBuilder settings = SettingsBuilder.New(RootKey, GetString(GetKey("title"), "AutoMount for TabletopTweaks"));
 
 		public static void Init()
 		{
 			if (Initialized)
 			{
-#if DEBUG
-				Main.Logger.Log("ModMenu settings already initialised");
-#endif
+				LogDebug("ModMenu settings already initialised");
 				return;
 			}
 

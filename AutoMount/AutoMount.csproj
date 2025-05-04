@@ -6,7 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AssemblyName>AutoMount</AssemblyName>
 		<Description>AutoMount for TabletopTweaks</Description>
-		<Version>1.2.3</Version>
+		<Version>1.2.4</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>AutoMount</RootNamespace>
@@ -49,21 +49,12 @@
 			<ModDescription>$(Description.Replace(' ', '_'))</ModDescription>
 		</PropertyGroup>
 
-		<Copy
-			SourceFiles="@(Files)"
-			DestinationFiles="@(Files->'$(WrathInstallDir)\Mods\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')"
-			OverwriteReadOnlyFiles="true"
-			SkipUnchangedFiles="false"
-		/>
+		<Copy SourceFiles="@(Files)" DestinationFiles="@(Files->'$(WrathInstallDir)\Mods\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')" OverwriteReadOnlyFiles="true" SkipUnchangedFiles="false" />
 		
 		<MakeDir Directories="$(MSBuildProjectDirectory)\$(OutputPath)\$(AssemblyName)" />
-		<Move SourceFiles="@(Files)" DestinationFolder="$(MSBuildProjectDirectory)\$(OutputPath)\$(AssemblyName)"/>
+		<Move SourceFiles="@(Files)" DestinationFolder="$(MSBuildProjectDirectory)\$(OutputPath)\$(AssemblyName)" />
 		
-		<ZipDirectory
-			SourceDirectory="$(MSBuildProjectDirectory)\$(OutputPath)"
-			DestinationFile="$(SolutionDir)Export\$(ModDescription)_v$(Version).zip"
-			Overwrite="true"
-		/>
+		<ZipDirectory SourceDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" DestinationFile="$(SolutionDir)_Export\$(ModDescription)_v$(Version).zip" Overwrite="true" />
 	</Target>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -91,12 +82,12 @@
 			<PropsFile Include="GamePath.props" />
 		</ItemGroup>
 		<ItemGroup>
-			<ExportDir Include="$(SolutionDir)Export\*.zip" />
+			<ExportDir Include="$(SolutionDir)_Export\*.zip" />
 		</ItemGroup>
 		
 		<Delete Files="@(PropsFile);@(ExportDir)" />
 	</Target>
 	<Target Name="PostClean" AfterTargets="Clean">
-		<RemoveDir Directories="$(OutDir)"/>
+		<RemoveDir Directories="$(OutDir)" />
 	</Target>
 </Project>

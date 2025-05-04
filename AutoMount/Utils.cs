@@ -27,5 +27,19 @@ namespace AutoMount
 
 			messageLog.AddMessage(message);
         }
+
+		public static void LogDebug(string message)
+		{
+#if DEBUG
+			try
+			{
+				Main.Logger.Log($"DEBUG: {message}");
+			}
+			catch (Exception e)
+			{
+				Main.Logger.Log($"Caught exception in debug log:\n{e}");
+			}
+#endif
+		}
 	}
 }
