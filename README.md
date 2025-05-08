@@ -7,7 +7,7 @@ Mount all your animal companions automatically with a customisable keybind. Adap
 # Install
 1. Download and install [Unity Mod Manager](https://www.nexusmods.com/site/mods/21) and set it up for WOTR ("Pathfinder Second Adventure").
 1. Download [AutoMount for TabletopTweaks](https://github.com/DarthParametric/AutoMount_for_TabletopTweaks/releases/latest).
-1. Download [ModMenu](https://github.com/WittleWolfie/ModMenu/releases/latest) for a prettier in-game mod settings menu.
+1. Download [ModMenu](https://github.com/CasDragon/ModMenu/releases/latest) for a prettier in-game mod settings menu.
 1. Drag the mod zips into Unity Mod Manager.
 1. Run your game.
 

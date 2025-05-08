@@ -5,7 +5,7 @@
     "Version": "1.2.4",
     "GameVersion": "2.5.0",
     "ManagerVersion": "0.31.0",
-    "Requirements": [ "ModMenu-2.0.8" ],
+    "Requirements": [ "ModMenu-2.0.10" ],
     "LoadAfter": [ "MewsiferConsole.Mod", "TabletopTweaks-Core", "TabletopTweaks-Base", "MorePartySlots" ],
     "AssemblyName": "AutoMount.dll",
     "EntryMethod": "AutoMount.Main.Load",
