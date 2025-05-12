@@ -1,10 +1,12 @@
-﻿using Kingmaker.Blueprints.JsonSystem;
+﻿using Kingmaker;
+using Kingmaker.Blueprints.JsonSystem;
 using Kingmaker.Localization;
 using Kingmaker.UI;
 using ModMenu.Settings;
 using KeyBinding = ModMenu.Settings.KeyBinding;
 using UnityEngine;
 using UnityModManagerNet;
+using static AutoMount.Strings.ModStrings;
 using static AutoMount.Utils;
 
 namespace AutoMount
@@ -12,20 +14,17 @@ namespace AutoMount
 	public static class Settings
 	{
 		private static bool Initialized = false;
-
-		// Keys
+		
 		private static readonly string RootKey = "automount";
-		private static readonly string Hotkeys = "hotkeys";
-		private static readonly string Whitelist = "whitelist";
 		public static readonly string MountOnAreaEnter = "areaentermount";
+		public static readonly string RideAivu = "rideaivu";
 		public static readonly string ConsoleOutput = "consoleoutput";
 		public static readonly string ConsoleDebug = "consoledebug";
-		public static readonly string RideAivu = "rideaivu";
-		public static readonly string MountHotKey = $"{Hotkeys}.mounthotkey";
-		public static readonly string DismountHotKey = $"{Hotkeys}.dismounthotkey";
+		public static readonly string MountHotKey = "hotkeys.mounthotkey";
+		public static readonly string DismountHotKey = "hotkeys.dismounthotkey";
 
-		private static readonly SettingsBuilder settings = SettingsBuilder.New(RootKey, GetString(GetKey("title"), "AutoMount for TabletopTweaks"));
-
+		private static SettingsBuilder MMSettings = SettingsBuilder.New(RootKey, GetString(GetKey("automount-title"), "AutoMount for TabletopTweaks"));
+		
 		public static void Init()
 		{
 			if (Initialized)
@@ -34,86 +33,86 @@ namespace AutoMount
 				return;
 			}
 
-			Main.Logger.Log("Initializing Settings");
+			Main.Logger.Log("Initialising ModMenu settings");
 
-			// Main settings
-			settings.AddToggle(
+			MMSettings.SetMod(Main.modEntry);
+			MMSettings.SetModDescription(ModDesc);
+			MMSettings.SetModIllustration(Utilities.CreateSprite("AutoMount.Img.Racing_Snail.png"));
+
+			//var MainSection = MMSettings.AddSubHeader(HeaderMainDesc, true);
+
+			MMSettings.AddToggle(
 				Toggle.New(
 					GetKey(MountOnAreaEnter),
 					true,
-					GetString($"{MountOnAreaEnter}-desc", "Mount On Entering Area"))
-				.WithLongDescription(GetString($"{MountOnAreaEnter}-desc-long", "Automatically mounts all whitelisted party members when entering a new area.")));
+					ToggleMountOnEnterDesc)
+				.WithLongDescription(ToggleMountOnEnterDescLong)
+			);
 
-			settings.AddToggle(
+			MMSettings.AddToggle(
 				Toggle.New(
 					GetKey(RideAivu),
 					true,
-					GetString($"{RideAivu}-desc", "Prefer Aivu As Primary Mount"))
-				.WithLongDescription(GetString($"{RideAivu}-desc-long", "When enabled, an Azata character will mount Aivu instead of their class pet (if they have one) when using the AutoMount hotkey and the automatic Mount On Entering Area.\n\n<b>N.B.</b> This will only take effect for characters that have Aivu and another rideable pet simultaneously. It should also work for companions taking Azata via ToyBox, etc. if they have a second pet.\n\nNote that if Aivu is currently too small or otherwise unsuitable to mount (incapacitated, dead, etc.), the character will attempt to mount their class pet instead.")));
+					ToggleRideAivuDesc)
+				.WithLongDescription(ToggleRideAivuDescLong)
+			);
 
-			settings.AddToggle(
+			MMSettings.AddToggle(
 				Toggle.New(
 					GetKey(ConsoleOutput),
 					false,
-					GetString($"{ConsoleOutput}-desc", "Enable Combat Log Output"))
-				.WithLongDescription(GetString($"{ConsoleOutput}-desc-long", "Outputs simple notifications of mod actions to the combat log. \n\n<b>N.B.</b> A notification will always be displayed when entering an area that prohibits mounting if the Mount On Entering Area setting is also enabled, regardless of this setting.")));
+					ToggleConsoleOutputDesc)
+				.WithLongDescription(ToggleConsoleOutputDescLong)
+			);
 
-			settings.AddToggle(
+			MMSettings.AddToggle(
 				Toggle.New(
 					GetKey(ConsoleDebug),
 					false,
-					GetString($"{ConsoleDebug}-desc", "Enable Additional Debug Output"))
-				.ShowVisualConnection()
-				.IsModificationAllowed(IsCombatLoggingEnabled)
-				.WithLongDescription(GetString($"{ConsoleDebug}-desc-long", "Adds additional information to failure messages in the combat log as a pop-up/tooltip, and also saves it to the Player.log file. Only intended for troubleshooting purposes, generally not recommended to leave on.\n\n<b>N.B.</b>: Requires the above Combat Log Output setting to be enabled. Due to Mod Menu only reading setting values on the inital opening of the screen, switch tabs or close and reopen the menu after enabling Combat Log Output and saving the settings.")));
+					ToggleConsoleDebugDesc)
+				.WithLongDescription(ToggleConsoleDebugDescLong)
+			);
 
-			// Hotkeys
-			var hotkeys = settings.AddSubHeader(GetString(Hotkeys, "Hotkeys"), true);
-			hotkeys.AddKeyBinding(
+			var Hotkeys = MMSettings.AddSubHeader(HeaderHotkeysDesc, true);
+
+			Hotkeys.AddKeyBinding(
 				KeyBinding.New(
 					GetKey(MountHotKey),
 					KeyboardAccess.GameModesGroup.All,
-					GetString($"{MountHotKey}-desc", "Mount"))
+					ToggleMountHotKeyDesc)
 				.SetPrimaryBinding(KeyCode.A, withCtrl: true, withShift: true)
-				.WithLongDescription(GetString($"{MountHotKey}-desc-long", "Sets the hotkey for mounting all whitelisted party members.")),
-				() => Main.Mount(true));
+				.WithLongDescription(ToggleMountHotKeyDescLong),
+				() => Main.Mount(true)
+			);
 
-			hotkeys.AddKeyBinding(
+			Hotkeys.AddKeyBinding(
 				KeyBinding.New(
 					GetKey(DismountHotKey),
 					KeyboardAccess.GameModesGroup.All,
-					GetString($"{DismountHotKey}-desc", "Dismount"))
+					ToggleDismountHotKeyDesc)
 				.SetPrimaryBinding(KeyCode.D, withCtrl: true, withShift: true)
-				.WithLongDescription(GetString($"{DismountHotKey}-desc-long", "Sets the hotkey for dismounting all whitelisted party members.")),
-				() => Main.Mount(false));
+				.WithLongDescription(ToggleDismountHotKeyDescLong),
+				() => Main.Mount(false)
+			);
 
-			// Whitelist
-			var whitelist = settings.AddSubHeader(GetString(Whitelist, "Character Whitelist"), true);
-			int slotCount = 6;
-			
-			if (GetMPSSlots() != null)
-			{
-				slotCount = Convert.ToInt32(GetMPSSlots());
-			}
-			
+			var Whitelist = MMSettings.AddSubHeader(HeaderWhitelistDesc, true);
+
+			int slotCount = GetMPSSlots() ?? 6; // Former monkey code approach amended after harsh criticism from Kuru and ADDB.
+
 			for (int i = 0; i < slotCount; i++)
 			{
-				whitelist.AddToggle(
+				Whitelist.AddToggle(
 					Toggle.New(
 						GetSlotKey(i),
 						true,
-						GetString($"{GetSlotPartialKey(i)}-desc", $"Slot {i + 1}"))
-					.WithLongDescription(
-						GetString($"{GetSlotPartialKey(i)}-desc-long",
-						$"Enables hotkeyed mount/dismount for the party member in slot {i + 1}. (You can change party order by dragging character portraits)")));
+						GetString($"{GetSlotPartialKey(i)}-desc", String.Format(WLSlotDesc(), i + 1)))
+					.WithLongDescription(GetString($"{GetSlotPartialKey(i)}-desc-long", String.Format(WLSlotDescLong(), i + 1)))
+				);
 			}
 
-
-			ModMenu.ModMenu.AddSettings(settings);
-
+			ModMenu.ModMenu.AddSettings(MMSettings);
 			Initialized = true;
-
-			Main.Logger.Log("Settings Initialized");
+			Main.Logger.Log("ModMenu settings initialisation complete");
 		}
 
 		public static string GetSlotKey(int slot)
@@ -158,7 +157,7 @@ namespace AutoMount
 
 		private static LocalizedString GetString(string partialKey, string text)
 		{
-			return Helpers.CreateString(GetKey(partialKey), text);
+			return Utilities.CreateString(GetKey(partialKey), text);
 		}
 
 		// Checks for the presence of xADDBx's "More Party Slots" mod and returns its config value if installed.

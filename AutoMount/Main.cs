@@ -16,21 +16,23 @@ using Kingmaker.Utility;
 using System.Text;
 using UnityEngine;
 using UnityModManagerNet;
-using static UnityModManagerNet.UnityModManager.ModEntry;
+using static UnityModManagerNet.UnityModManager;
 
 namespace AutoMount
 {
 	public static class Main
 	{
 		public static bool Enabled;
-		public static ModLogger Logger;
+		public static ModEntry.ModLogger Logger;
 		private static Harmony m_harmony;
+		internal static ModEntry modEntry;
 		private static OnAreaLoad m_area_load_handler;
-		private static Guid m_mount_ability_guid = new Guid("d340d820867cf9741903c9be9aed1ccc");
+		private static Guid m_mount_ability_guid = new("d340d820867cf9741903c9be9aed1ccc");
 		private static bool m_force_mount = false;
 
-		public static bool Load(UnityModManager.ModEntry modEntry)
+		public static bool Load(ModEntry modEntry)
 		{
+			Main.modEntry = modEntry;
 			Logger = modEntry.Logger;
 
 			Logger.Log("Loading");
