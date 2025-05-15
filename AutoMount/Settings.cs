@@ -38,8 +38,6 @@ namespace AutoMount
 			MMSettings.SetModDescription(ModDesc);
 			MMSettings.SetModIllustration(Utilities.CreateSprite("AutoMount.Img.Racing_Snail.png"));
 
-			//var MainSection = MMSettings.AddSubHeader(HeaderMainDesc, true);
-
 			MMSettings.AddToggle(
 				Toggle.New(
 					GetKey(MountOnAreaEnter),

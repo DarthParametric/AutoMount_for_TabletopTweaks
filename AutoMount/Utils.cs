@@ -20,8 +20,6 @@ using Kingmaker.Utility;
 using System.Text;
 using UnityEngine;
 using static AutoMount.Settings;
-using static Kingmaker.QA.Clockwork.TaskExploreFlyingIsles;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace AutoMount
 {

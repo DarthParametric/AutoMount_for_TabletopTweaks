@@ -7,7 +7,7 @@ namespace AutoMount.Strings
 	{
 		public static readonly LocalizedString ModDesc = Utilities.CreateStringAll("dpautomount-desc",
 			enGB: "Adds a hotkey to mount/dismount pets and automounts when entering an area. Compatible with Tabletop Tweak's Undersized Mount feat.",
-			deDE: "Fügt einen Hotkey zum Auf- und Absteigen von Haustieren und zum automatischen Aufsteigen beim Betreten eines Bereichs hinzu. Kompatibel mit der Funktion „Undersized Mount“ von Tabletop Tweak.",
+			deDE: "Fügt einen Hotkey zum Auf-und Absteigen von Haustieren und zum automatischen Aufsteigen beim Betreten eines Bereichs hinzu. Kompatibel mit Tabletop Tweak's Unterdimensionierter Anhängungs-Fähigkeit.",
 			esES: "Añade una tecla de acceso rápido para montar y desmontar mascotas y se monta automáticamente al entrar en una zona. Compatible con la función de Montura Subdimensionada de Tabletop Tweak.",
 			frFR: "Ajoute un raccourci clavier pour monter/descendre des familiers et des montures automatiques en entrant dans une zone. Compatible avec la fonctionnalité Monture sous-dimensionnée de Tabletop Tweak.",
 			itIT: "Aggiunge un tasto di scelta rapida per montare/smontare da animali domestici e per la monta automatica quando si entra in un'area. Compatibile con il talento Montatura sottodimensionata di Tabletop Tweak.",
@@ -17,45 +17,33 @@ namespace AutoMount.Strings
 			zhCN: "添加热键，用于在进入区域时骑乘/下马宠物并自动骑乘。与 Tabletop Tweak 的“小坐骑”专长兼容。"
 		);
 
-		public static readonly LocalizedString HeaderMainDesc = Utilities.CreateStringAll("dpautomount-headermain-desc",
-			enGB: "Main Settings",
-			deDE: "",
-			esES: "",
-			frFR: "",
-			itIT: "",
-			plPL: "",
-			ptBR: "",
-			ruRU: "",
-			zhCN: ""
-		);
-
 		public static readonly LocalizedString HeaderHotkeysDesc = Utilities.CreateStringAll("dpautomount-headerhotkeys-desc",
 			enGB: "Hotkeys",
-			deDE: "",
-			esES: "",
-			frFR: "",
-			itIT: "",
-			plPL: "",
-			ptBR: "",
-			ruRU: "",
-			zhCN: ""
+			deDE: "Schnelltasten",
+			esES: "Teclas de acceso rápido",
+			frFR: "Raccourcis clavier",
+			itIT: "Tasti di scelta rapida",
+			plPL: "Skróty klawiszowe",
+			ptBR: "Teclas de atalho",
+			ruRU: "Горячие клавиши",
+			zhCN: "热键"
 		);
 
 		public static readonly LocalizedString HeaderWhitelistDesc = Utilities.CreateStringAll("dpautomount-headerwhitelist-desc",
 			enGB: "Character Whitelist",
-			deDE: "",
-			esES: "",
-			frFR: "",
-			itIT: "",
-			plPL: "",
-			ptBR: "",
-			ruRU: "",
-			zhCN: ""
+			deDE: "Charakter-Weißliste",
+			esES: "Lista blanca de caracteres",
+			frFR: "Liste blanche des caractères",
+			itIT: "Elenco bianco dei caratteri",
+			plPL: "Biała lista znaków",
+			ptBR: "Lista branca de caracteres",
+			ruRU: "Белый список персонажей",
+			zhCN: "字符白名单"
 		);
 
 		public static readonly LocalizedString ToggleMountOnEnterDesc = Utilities.CreateStringAll("dpautomount-areaentermount-desc",
 			enGB: "Mount On Entering Area",
-			deDE: "Am Eingangsbereich montieren",
+			deDE: "Montieren beim Betreten eines Bereichs",
 			esES: "Monte al entrar al área",
 			frFR: "Monter sur la zone d'entrée",
 			itIT: "Montare all'ingresso dell'area",
@@ -67,7 +55,7 @@ namespace AutoMount.Strings
 
 		public static readonly LocalizedString ToggleMountOnEnterDescLong = Utilities.CreateStringAll("dpautomount-areaentermount-desc-long",
 			enGB: "Automatically mounts all whitelisted party members when entering/loading a new area.",
-			deDE: "Besteigt automatisch alle auf der Whitelist stehenden Gruppenmitglieder, wenn ein neuer Bereich betreten/geladen wird.",
+			deDE: "Montieren alle in der Weißliste aufgeführten Parteimitglieder automatisch beim Betreten/Laden eines neuen Bereichs an.",
 			esES: "Monta automáticamente a todos los miembros del grupo incluidos en la lista blanca al ingresar o cargar una nueva área.",
 			frFR: "Monte automatiquement tous les membres du groupe sur liste blanche lors de l'entrée/du chargement d'une nouvelle zone.",
 			itIT: "Monta automaticamente tutti i membri del gruppo nella whitelist quando si entra/carica una nuova area.",

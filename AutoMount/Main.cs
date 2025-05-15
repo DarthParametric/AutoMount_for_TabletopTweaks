@@ -2,7 +2,6 @@
 using Kingmaker;
 using Kingmaker.Blueprints.Area;
 using Kingmaker.Blueprints;
-using Kingmaker.EntitySystem.Entities;
 using Kingmaker.Enums;
 using Kingmaker.PubSubSystem;
 using Kingmaker.UnitLogic;
