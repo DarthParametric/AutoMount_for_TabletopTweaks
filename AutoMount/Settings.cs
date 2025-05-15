@@ -1,5 +1,4 @@
-﻿using Kingmaker;
-using Kingmaker.Blueprints.JsonSystem;
+﻿using Kingmaker.Blueprints.JsonSystem;
 using Kingmaker.Localization;
 using Kingmaker.UI;
 using ModMenu.Settings;
