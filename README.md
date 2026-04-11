@@ -1,5 +1,4 @@
 ﻿# About
-
 A mod for Owlcat's Pathfinder: Wrath of the Righteous.
 
 Mount all your animal companions automatically with a customisable keybind. Adapted for compatibility with TabletopTweaks and its Undersized Mount feat, which allows a rider to mount a pet of the same size class (e.g. human riding a level 1 wolf).
